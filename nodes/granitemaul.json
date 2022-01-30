@@ -1,0 +1,91 @@
+{
+  "name":         "granitemaul",
+  "description":  "ThinkPad T14",
+
+  "set_fqdn":     "*",
+
+  "ssh_user": {
+    "users": ["kelvinlu"]
+  },
+
+  "configthings": [
+    {
+      "user":                   "kelvinlu",
+      "dir":                    "/home/kelvinlu/",
+      "git":                    "https://github.com/KelvinLu/configthings.git",
+      "ref":                    "master",
+      "stow":                   ["bash", "git", "vim", "i3", "nitrogen"],
+      "stow_bash_profile":      true
+    }
+  ],
+
+  "customization": {
+    "urxvt_font": {
+      "kelvinlu": {
+        "font":                 "Comic Mono",
+        "font_size":            10,
+        "include_recipe":       "customization::font_comic_mono"
+      }
+    },
+    "urxvt_transparency": {
+      "kelvinlu": {
+        "shading":              40
+      }
+    },
+    "xdg_mime": {
+      "kelvinlu": {
+        "web_browser": {
+          "desktop_entry":      "/usr/share/applications/brave-browser.desktop",
+          "include_recipe":     "applications::brave_browser"
+        }
+      }
+    }
+  },
+
+  "applications": {
+    "vim_plug_install": {
+      "users": ["kelvinlu"]
+    }
+  },
+
+  "development": {
+    "docker": {
+      "data-root": "/storage/docker/"
+    }
+  },
+
+  "run_list": [
+    "recipe[pacman::default]",
+
+    "recipe[patch::rm_chef_dst_root_ca_x3]",
+
+    "recipe[hostname::default]",
+    "recipe[applications::timedatectl]",
+
+    "recipe[applications::clipboard]",
+    "recipe[patch::rm_clipit]",
+
+    "recipe[ssh_user::default]",
+    "recipe[ssh_user::agent]",
+
+    "recipe[configthings::default]",
+    "recipe[configthings::stow_bash_profile]",
+
+    "recipe[customization::touchpad_acceleration]",
+    "recipe[customization::font_comic_mono]",
+    "recipe[customization::urxvt_font]",
+    "recipe[customization::urxvt_transparency]",
+    "recipe[customization::xdg_mime_web_browser]",
+
+    "recipe[applications::vim_plug_install]",
+    "recipe[applications::vim_ycm_compile]",
+
+    "recipe[applications::playerctl]",
+    "recipe[applications::brave_browser]",
+
+    "recipe[development::tools]",
+    "recipe[development::docker]",
+    "recipe[development::python]",
+    "recipe[development::ruby]"
+  ]
+}

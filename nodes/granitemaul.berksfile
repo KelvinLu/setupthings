@@ -1,0 +1,4 @@
+source 'https://supermarket.chef.io'
+
+cookbook 'hostname', '~> 0.4.2'
+cookbook 'pacman', '~> 2.0.0'

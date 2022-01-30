@@ -1,0 +1,9 @@
+DEPENDENCIES
+  hostname (~> 0.4.2)
+  pacman (~> 2.0.0)
+
+GRAPH
+  hostname (0.4.2)
+    hostsfile (>= 0.0.0)
+  hostsfile (3.0.1)
+  pacman (2.0.0)
