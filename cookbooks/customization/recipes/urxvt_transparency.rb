@@ -42,5 +42,7 @@ node['customization']&.[]('urxvt_transparency').each do |user, config|
     command ['xrdb', '-load', xresources_file]
 
     user    user
+
+    only_if { is_tty? }
   end
 end

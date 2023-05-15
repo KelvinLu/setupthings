@@ -46,5 +46,7 @@ node['customization']&.[]('urxvt_font').each do |user, config|
     command ['xrdb', '-load', xresources_file]
 
     user    user
+
+    only_if { is_tty? }
   end
 end

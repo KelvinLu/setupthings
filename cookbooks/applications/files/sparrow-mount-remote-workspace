@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+SCRIPT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+DEFAULT_MOUNTPOINT="${SCRIPT_DIR}/wallets/remote"
+DEFAULT_WORKSPACE_PATH='workspace'
+
+function mute_color {
+  printf $'\e[0;30m'
+}
+
+function reset_color {
+  printf $'\e[0m'
+}
+
+[ -z ${remote_user:-} ] && read -p $'\e[0m'$'\e[1;35m''Remote user'$'\e[0m'': '$'\e[4m' remote_user
+remote_user=${remote_user:?'Remote user must be specified.'}
+
+[ -z ${remote_host:-} ] && read -p $'\e[0m'$'\e[1;35m''Remote host'$'\e[0m'': '$'\e[4m' remote_host
+remote_host=${remote_host:?'Remote host must be specified.'}
+
+[ -z ${remote_path:-} ] && read -p $'\e[0m'$'\e[1;33m''Remote path '$'\e[0;30m'"[leave empty to use default -- ${DEFAULT_WORKSPACE_PATH}]"$'\e[0m'': '$'\e[0;37m'$'\e[4m' remote_path
+remote_path="${remote_path:-$DEFAULT_WORKSPACE_PATH}"
+
+[ -z ${mountpoint:-} ] && read -p $'\e[0m'$'\e[0;33m''Mountpoint '$'\e[0;30m'"[leave empty to use default -- ${DEFAULT_MOUNTPOINT}]"$'\e[0m'': '$'\e[0;37m'$'\e[4m' mountpoint
+mountpoint="${mountpoint:-$DEFAULT_MOUNTPOINT}"
+
+reset_color
+
+echo
+
+mute_color
+
+if ! mount -t fuse -o 'rw,noexec,nosuid,nodev,relatime' "sshfs#${remote_user}@${remote_host}:${remote_path}" "${mountpoint}" ; then
+  reset_color
+
+  echo 'sshfs error' >&2
+  exit 2
+fi
+
+reset_color
+
+echo "Successfully mounted (run \`umount ${mountpoint}\` when finished) ..."
+echo
+
+mute_color
+
+findmnt "${mountpoint}" || true
+
+reset_color

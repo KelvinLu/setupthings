@@ -5,7 +5,7 @@
   "set_fqdn":     "*",
 
   "ssh_user": {
-    "users": ["kelvinlu"]
+    "users":                    ["kelvinlu"]
   },
 
   "configthings": [
@@ -44,13 +44,26 @@
 
   "applications": {
     "vim_plug_install": {
-      "users": ["kelvinlu"]
+      "users":                  ["kelvinlu"]
+    },
+
+    "sparrow": {
+      "users":                  ["kelvinlu"],
+
+      "version":                "1.7.6",
+
+      "sha256_checksums": {
+        "sparrow_desktop":      "e3a3db024145a434621b7c69a8016a6aa2b6d61159d06d91dc5ca308d2a17a06",
+        "manifest_txt":         "84e5a54386376bca8d2ea3857234eab79b645c231e7c25698070e33754d36185",
+        "manifest_txt_asc":     "b725063532ee786a56b439be50ae06152df974886b0a7853a8f5db907aecc9c2",
+        "craig_raw_gpg_key":    "1ae8e65076cb14173c56c1ae813cc25e79ca93cf644018746206789e1af4b089"
+      }
     }
   },
 
   "development": {
     "docker": {
-      "data-root": "/storage/docker/"
+      "data-root":              "/storage/docker/"
     }
   },
 
@@ -80,8 +93,14 @@
     "recipe[applications::vim_plug_install]",
     "recipe[applications::vim_ycm_compile]",
 
+    "recipe[applications::sshfs]",
+
     "recipe[applications::playerctl]",
+
     "recipe[applications::brave_browser]",
+    "recipe[applications::tor_browser]",
+
+    "recipe[applications::sparrow]",
 
     "recipe[development::tools]",
     "recipe[development::docker]",

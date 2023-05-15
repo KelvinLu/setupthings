@@ -6,8 +6,6 @@
 
 require 'etc'
 
-include_recipe 'configthings::default'
-
 node['applications']&.[]('vim_plug_install')&.[]('users').each do |user|
   home_dir =
     begin

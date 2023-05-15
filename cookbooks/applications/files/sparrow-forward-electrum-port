@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+DEFAULT_ELECTRUM_PORT=50002
+
+function mute_color {
+  printf $'\e[0;30m'
+}
+
+function reset_color {
+  printf $'\e[0m'
+}
+
+[ -z ${remote_user:-} ] && read -p $'\e[0m'$'\e[1;35m''Remote user'$'\e[0m'': '$'\e[4m' remote_user
+remote_user=${remote_user:?'Remote user must be specified.'}
+
+[ -z ${remote_host:-} ] && read -p $'\e[0m'$'\e[1;35m''Remote host'$'\e[0m'': '$'\e[4m' remote_host
+remote_host=${remote_host:?'Remote host must be specified.'}
+
+[ -z ${remote_port:-} ] && read -p $'\e[0m'$'\e[1;34m''Electrum port '$'\e[0;30m'"[leave empty to use default -- ${DEFAULT_ELECTRUM_PORT}]"$'\e[0m'': '$'\e[4m' remote_port
+remote_port="${remote_port:-$DEFAULT_ELECTRUM_PORT}"
+
+[ -z ${local_port:-} ] && read -p $'\e[0m'$'\e[0;34m''Forwarding port '$'\e[0;30m'"[leave empty to use default -- ${remote_port}]"$'\e[0m'': '$'\e[4m' local_port
+local_port="${local_port:-$remote_port}"
+
+reset_color
+
+[ -z ${LAUNCH_REMOTE_SHELL:-} ] && echo -e '\n... fowarding port (^C to stop)'
+
+ssh $([ -z ${LAUNCH_REMOTE_SHELL:-} ] && echo '-N') -L "127.0.0.1:${local_port}:localhost:${remote_port}" "${remote_user}@${remote_host}"

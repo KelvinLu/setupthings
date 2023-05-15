@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+SCRIPT_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+DEFAULT_MOUNTPOINT="${SCRIPT_DIR}/wallets/remote"
+
+function mute_color {
+  printf $'\e[0;30m'
+}
+
+function reset_color {
+  printf $'\e[0m'
+}
+
+trap 'reset_color' EXIT
+
+read -p $'\e[0m'$'\e[1;35m''Remote user'$'\e[0m'': '$'\e[4m' remote_user
+remote_user=${remote_user:?'Remote user must be specified.'}
+
+read -p $'\e[0m'$'\e[1;35m''Remote host'$'\e[0m'': '$'\e[4m' remote_host
+remote_host=${remote_host:?'Remote host must be specified.'}
+
+read -p $'\e[0m'$'\e[0;33m''Mountpoint '$'\e[0;30m'"[leave empty to use default -- ${DEFAULT_MOUNTPOINT}]"$'\e[0m'': '$'\e[0;37m'$'\e[4m' mountpoint
+mountpoint="${mountpoint:-$DEFAULT_MOUNTPOINT}"
+
+source "${SCRIPT_DIR}/mount-remote-workspace"
+
+function unmount_remote_workspace {
+  reset_color
+
+  echo
+  echo "Attempting to unmount ${mountpoint} ..."
+
+  mute_color
+
+  umount "${mountpoint}" || true
+
+  reset_color
+}
+
+trap 'unmount_remote_workspace' EXIT
+
+reset_color
+
+echo
+echo "Establishing Electrum port forwarding and remote session ..."
+echo
+
+LAUNCH_REMOTE_SHELL=true
+source "${SCRIPT_DIR}/forward-electrum-port"
