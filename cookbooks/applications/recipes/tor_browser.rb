@@ -23,3 +23,7 @@ ruby_block 'configure /etc/tor/torsocks.conf' do
     file.write_file
   end
 end
+
+pacman_package 'nyx' do
+  action :install
+end
