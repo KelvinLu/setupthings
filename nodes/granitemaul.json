@@ -105,6 +105,7 @@
     "recipe[development::tools]",
     "recipe[development::docker]",
     "recipe[development::python]",
-    "recipe[development::ruby]"
+    "recipe[development::ruby]",
+    "recipe[development::rust]"
   ]
 }
