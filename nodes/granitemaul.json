@@ -90,6 +90,8 @@
     "recipe[customization::urxvt_transparency]",
     "recipe[customization::xdg_mime_web_browser]",
 
+    "recipe[applications::tailscale]",
+
     "recipe[applications::vim_plug_install]",
     "recipe[applications::vim_ycm_compile]",
 
