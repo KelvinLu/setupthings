@@ -34,7 +34,7 @@ echo
 
 mute_color
 
-if ! mount -t fuse -o 'rw,noexec,nosuid,nodev,relatime' "sshfs#${remote_user}@${remote_host}:${remote_path}" "${mountpoint}" ; then
+if ! mount -t fuse -o 'rw,noexec,nosuid,nodev' "sshfs#${remote_user}@${remote_host}:${remote_path}" "${mountpoint}" ; then
   reset_color
 
   echo 'sshfs error' >&2
