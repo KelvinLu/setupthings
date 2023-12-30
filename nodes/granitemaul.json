@@ -75,6 +75,8 @@
     "recipe[hostname::default]",
     "recipe[applications::timedatectl]",
 
+    "recipe[applications::zip]",
+    "recipe[applications::feh]",
     "recipe[applications::clipboard]",
     "recipe[patch::rm_clipit]",
 
